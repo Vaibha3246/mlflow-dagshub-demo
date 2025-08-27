@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import dagshub
-dagshub.init(repo_owner='vaibhav', repo_name='mlflow-dagshub-demo', mlflow=True)
+dagshub.init(repo_owner='Vaibha3246', repo_name='mlflow-dagshub-demo', mlflow=True)
 
 mlflow.set_tracking_uri("https://github.com/Vaibha3246/mlflow-dagshub-demo.git")
 
