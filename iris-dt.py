@@ -1,7 +1,7 @@
 import mlflow
 import mlflow.sklearn
 from sklearn.datasets import load_iris
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
@@ -17,7 +17,7 @@ dagshub.init(repo_owner='Vaibha3246', repo_name='mlflow-dagshub-demo', mlflow=Tr
 mlflow.set_tracking_uri("https://dagshub.com/Vaibha3246/mlflow-dagshub-demo.mlflow")
 
 # Set experiment
-experiment_name = "iris-rf"
+experiment_name = "iris-dt"
 mlflow.set_experiment(experiment_name)
 
 
@@ -29,7 +29,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # ------------------ Model Params ------------------ #
 max_depth = 4
-n_estimators = 50
+
 
 
 # ------------------ Train + Log ------------------ #
@@ -37,9 +37,9 @@ with mlflow.start_run() as run:
     run_id = run.info.run_id
 
     # Train model
-    rf = RandomForestClassifier(max_depth=max_depth, n_estimators=n_estimators)
-    rf.fit(X_train, y_train)
-    y_pred = rf.predict(X_test)
+    dt= DecisionTreeClassifier(max_depth=max_depth)
+    dt.fit(X_train, y_train)
+    y_pred = dt.predict(X_test)
 
     # Metrics
     accuracy = accuracy_score(y_test, y_pred)
@@ -47,7 +47,7 @@ with mlflow.start_run() as run:
 
     # Params
     mlflow.log_param('max_depth', max_depth)
-    mlflow.log_param('n_estimators', n_estimators)
+    
 
     # ------------------ Confusion Matrix ------------------ #
     cm = confusion_matrix(y_test, y_pred)
@@ -63,12 +63,12 @@ with mlflow.start_run() as run:
     mlflow.log_artifact("confusion_matrix.png")
 
     # ------------------ Save & Log Model ------------------ #
-    model_path = "random_forest_model.pkl"
-    joblib.dump(rf, model_path)                  # save locally
+    model_path = "descion_tree_model.pkl"
+    joblib.dump(dt, model_path)                  # save locally
     mlflow.log_artifact(model_path)              # upload to DagsHub artifacts
 
     # ------------------ Tags ------------------ #
-    mlflow.set_tag('author', 'rahul')
-    mlflow.set_tag('model', 'random forest')
+    mlflow.set_tag('author', 'mahesh')
+    mlflow.set_tag('model', 'descion tree classifier')
 
     print(f'✅ Run {run_id} completed with accuracy: {accuracy:.4f}')
