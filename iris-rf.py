@@ -12,6 +12,18 @@ dagshub.init(repo_owner='Vaibha3246', repo_name='mlflow-dagshub-demo', mlflow=Tr
 
 mlflow.set_tracking_uri("https://github.com/Vaibha3246/mlflow-dagshub-demo.git")
 
+
+from mlflow.exceptions import MlflowException
+
+experiment_name = "iris-rf"
+
+try:
+    mlflow.set_experiment(experiment_name)
+except MlflowException:
+    mlflow.create_experiment(experiment_name)
+    mlflow.set_experiment(experiment_name)
+
+
 # Load the iris dataset
 iris = load_iris()
 X = iris.data
